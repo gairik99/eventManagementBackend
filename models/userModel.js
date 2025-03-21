@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide a password"],
     },
+    category: String,
     agree: {
       type: Boolean,
       default: false,
