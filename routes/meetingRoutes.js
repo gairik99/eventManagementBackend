@@ -9,7 +9,9 @@ const router = express.Router();
 
 router.route("/meeting").post(validateToken, createMeeting);
 
-router.route("/meeting/:id").delete(validateToken, deleteMeeting);
-router.route("/meeting/:id").patch(validateToken, updateMeeting);
+router
+  .route("/meeting/:id")
+  .delete(validateToken, deleteMeeting)
+  .patch(validateToken, updateMeeting);
 
 module.exports = router;

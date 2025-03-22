@@ -61,9 +61,9 @@ const meetingSchema = new mongoose.Schema(
           enum: ["pending", "accepted", "declined"],
           default: "pending",
         },
-        activeDeactive: {
-          type: String,
-          default: "active",
+        active: {
+          type: Boolean,
+          default: true,
         },
         addedAt: {
           type: Date,
