@@ -50,6 +50,7 @@ const meetingSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide a meetingLink"],
     },
+    meeting:String,
     guests: [
       {
         user: {

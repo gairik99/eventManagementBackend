@@ -38,6 +38,7 @@ async function createMeeting(req, res) {
 
     const newMeeting = new Meeting({
       ...rest,
+      meeting,
       guests: guestList,
       createdBy: createdById,
     });
