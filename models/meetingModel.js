@@ -30,6 +30,7 @@ const meetingSchema = new mongoose.Schema(
     ampm: {
       type: String,
       required: [true, "Provide a am/pm"],
+      default: "PM",
     },
     timeZone: {
       type: String,

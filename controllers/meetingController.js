@@ -167,4 +167,28 @@ async function updateMeeting(req, res) {
     });
   }
 }
-module.exports = { createMeeting, deleteMeeting, updateMeeting };
+async function getMyMeetings(req, res) {
+  try {
+    // Get the authenticated user's ID from req.user
+    const userId = req.user.id;
+
+    // Find meetings where createdBy matches the user's ID
+    const meetings = await Meeting.find({ createdBy: userId })
+      .populate("createdBy", "-password") // Populate creator details
+      .populate("guests.user", "-password") // Populate guest user details
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    res.status(200).json({
+      success: true,
+      count: meetings.length,
+      meetings,
+    });
+  } catch (error) {
+    console.error("Error fetching meetings:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+module.exports = { createMeeting, deleteMeeting, updateMeeting, getMyMeetings };

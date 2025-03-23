@@ -4,10 +4,14 @@ const {
   createMeeting,
   deleteMeeting,
   updateMeeting,
+  getMyMeetings,
 } = require("../controllers/meetingController");
 const router = express.Router();
 
-router.route("/meeting").post(validateToken, createMeeting);
+router
+  .route("/meeting")
+  .post(validateToken, createMeeting)
+  .get(validateToken, getMyMeetings);
 
 router
   .route("/meeting/:id")
