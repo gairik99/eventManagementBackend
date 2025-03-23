@@ -129,7 +129,7 @@ async function updateMeeting(req, res) {
       }));
     }
 
-    const updateData = { ...rest };
+    const updateData = { ...rest, meeting };
     if (guestList.length > 0) {
       updateData.guests = guestList;
     }
