@@ -216,10 +216,69 @@ async function getGuestMeetings(req, res) {
     });
   }
 }
+
+const updateGuestStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const { status } = req.body;
+
+    // Validate input
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid meeting ID" });
+    }
+
+    if (!["accepted", "rejected"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid status. Allowed values: 'accepted' or 'rejected'",
+      });
+    }
+
+    // Update the guest status
+    const updatedMeeting = await Meeting.findOneAndUpdate(
+      {
+        _id: id,
+        "guests.user": userId,
+      },
+      {
+        $set: { "guests.$.status": status },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .populate("createdBy", "-password")
+      .populate("guests.user", "-password");
+
+    if (!updatedMeeting) {
+      return res.status(404).json({
+        success: false,
+        error: "Meeting not found or user is not a guest in this meeting",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      meeting: updatedMeeting,
+    });
+  } catch (error) {
+    console.error("Error updating guest status:", error);
+    res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+};
+
 module.exports = {
   createMeeting,
   deleteMeeting,
   updateMeeting,
   getMyMeetings,
   getGuestMeetings,
+  updateGuestStatus,
 };
