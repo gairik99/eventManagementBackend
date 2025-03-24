@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Meeting = require("../models/meetingModel");
 const User = require("../models/userModel");
 
@@ -192,4 +193,33 @@ async function getMyMeetings(req, res) {
     });
   }
 }
-module.exports = { createMeeting, deleteMeeting, updateMeeting, getMyMeetings };
+
+async function getGuestMeetings(req, res) {
+  try {
+    const userId = req.user.id;
+
+    // Find meetings where user exists in guests array
+    const meetings = await Meeting.find({
+      "guests.user": new mongoose.Types.ObjectId(userId),
+    }).sort({ createdAt: -1 }); // Newest first
+
+    res.status(200).json({
+      success: true,
+      count: meetings.length,
+      meetings,
+    });
+  } catch (error) {
+    console.error("Error fetching guest meetings:", error);
+    res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+}
+module.exports = {
+  createMeeting,
+  deleteMeeting,
+  updateMeeting,
+  getMyMeetings,
+  getGuestMeetings,
+};

@@ -5,6 +5,7 @@ const {
   deleteMeeting,
   updateMeeting,
   getMyMeetings,
+  getGuestMeetings,
 } = require("../controllers/meetingController");
 const router = express.Router();
 
@@ -17,5 +18,7 @@ router
   .route("/meeting/:id")
   .delete(validateToken, deleteMeeting)
   .patch(validateToken, updateMeeting);
+
+router.route("/meeting/guests").get(validateToken, getGuestMeetings);
 
 module.exports = router;
