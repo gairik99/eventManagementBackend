@@ -15,15 +15,13 @@ const updateUser = async (req, res) => {
       "category",
       "password",
       "email",
+      "availability",
     ];
     const updates = req.body;
 
-    // Validate request has updates
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ message: "No updates provided" });
     }
-
-    // Check for invalid fields
     const invalidFields = Object.keys(updates).filter(
       (field) => !allowedUpdates.includes(field)
     );
@@ -37,7 +35,14 @@ const updateUser = async (req, res) => {
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, saltRounds);
     }
-    // Update the user
+    if (updates.availability) {
+      if (!Array.isArray(updates.availability)) {
+        return res.status(400).json({
+          message: "Availability must be an array of objects",
+        });
+      }
+    }
+
     const user = await User.findByIdAndUpdate(
       userId,
       { $set: updates },

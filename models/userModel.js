@@ -1,5 +1,41 @@
 const { mongoose } = require("mongoose");
 
+const availabilitySchema = new mongoose.Schema({
+  day: {
+    type: String,
+    required: true,
+    enum: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  isAllDay: {
+    type: Boolean,
+    default: false,
+  },
+  slots: [
+    {
+      start: {
+        type: String,
+        required: true,
+      },
+      end: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+});
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -31,6 +67,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    availability: [availabilitySchema],
   },
   { timestamps: true }
 );
