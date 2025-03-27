@@ -51,6 +51,10 @@ const meetingSchema = new mongoose.Schema(
       required: [true, "Provide a meetingLink"],
     },
     meeting: String,
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     guests: [
       {
         user: {
@@ -62,10 +66,6 @@ const meetingSchema = new mongoose.Schema(
           type: String,
           enum: ["pending", "accepted", "rejected"],
           default: "pending",
-        },
-        active: {
-          type: Boolean,
-          default: true,
         },
         addedAt: {
           type: Date,
