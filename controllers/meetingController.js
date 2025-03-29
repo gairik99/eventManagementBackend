@@ -274,6 +274,39 @@ const updateGuestStatus = async (req, res) => {
   }
 };
 
+const getMeetingById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid meeting ID" });
+    }
+    const meeting = await Meeting.findById(id).select(
+      "-__v  -password -createdBy -guests -meeting"
+    );
+    if (!meeting) {
+      return res.status(404).json({ error: "Meeting not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      meeting,
+    });
+  } catch (error) {
+    console.error("Error fetching meeting:", error);
+
+    // Handle CastError specifically
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ error: "Invalid meeting ID format" });
+    }
+
+    res.status(500).json({
+      error: "Server error",
+      details: error.message,
+    });
+  }
+};
+
 module.exports = {
   createMeeting,
   deleteMeeting,
@@ -281,4 +314,5 @@ module.exports = {
   getMyMeetings,
   getGuestMeetings,
   updateGuestStatus,
+  getMeetingById,
 };

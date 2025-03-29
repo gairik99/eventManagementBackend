@@ -7,6 +7,7 @@ const {
   getMyMeetings,
   getGuestMeetings,
   updateGuestStatus,
+  getMeetingById,
 } = require("../controllers/meetingController");
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router
 
 router.route("/meeting/guests").get(validateToken, getGuestMeetings);
 router.route("/meeting/guests/:id").patch(validateToken, updateGuestStatus);
+router.get("/copymeeting/:id", getMeetingById);
 
 module.exports = router;
