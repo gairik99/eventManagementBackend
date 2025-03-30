@@ -15,7 +15,7 @@ const availabilitySchema = new mongoose.Schema({
     ],
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   isAllDay: {
