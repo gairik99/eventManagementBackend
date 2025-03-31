@@ -26,7 +26,6 @@ This will install all required packages listed in `package.json`.
 │── /routes        # API Routes
 │── /controller    # Business Logic for Routes
 │── /middleware    # request verification 
-│── /utils         # nodeMailer Setup
 │── .env           # Environment Variables (Not to be committed)
 │── App.js         # Main Entry Point
 │── package.json   # Dependencies & Scripts` 
